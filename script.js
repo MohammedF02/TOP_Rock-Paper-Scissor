@@ -1,3 +1,25 @@
+let matchPlayed = 0;
+let playerScore = 0;
+let computerScore = 0;
+
+var playerDiv = document.createElement("div")
+var computerDiv = document.createElement("div")
+
+document.getElementById("playerScore").append(playerDiv);
+document.getElementById("computerScore").append(computerDiv);
+
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissor = document.querySelector('#scissor');
+
+
+var roundDiv = document.createElement("div");
+var Matchdiv = document.createElement("div");
+
+document.getElementById("displayRound").append(roundDiv);
+document.getElementById("displayMatch").append(Matchdiv);
+
+
 function getComputerChoice() {
     rand = ["rock", "paper", "scissor"];
     let random = Math.floor(Math.random() * 3);
@@ -5,48 +27,57 @@ function getComputerChoice() {
 }
 
 function playRound(playerSelection, computerSelection) {
+    matchPlayed++;
     if (playerSelection == "rock" && computerSelection == "paper") {
-        console.log("You Lose! Paper beats Rock");
+        roundDiv.innerHTML = "You Lose! Paper beats Rock";
         computerScore++;
     } else if (playerSelection == "paper" && computerSelection == "scissor") {
-        console.log("You Lose! Scissor beats Paper");
+        roundDiv.innerHTML = ("You Lose! Scissor beats Paper");
         computerScore++;
     } else if (playerSelection == "scissor" && computerSelection == "rock") {
-        console.log("You Lose! Rock beats Scissor");
+        roundDiv.innerHTML = ("You Lose! Rock beats Scissor");
         computerScore++;
     } else if (playerSelection == "paper" && computerSelection == "rock") {
-        console.log("You win! Paper beats Rock");
+        roundDiv.innerHTML = ("You win! Paper beats Rock");
         playerScore++;
     } else if (playerSelection == "scissor" && computerSelection == "paper") {
-        console.log("You win! Scissor beats Paper");
+        roundDiv.innerHTML = ("You win! Scissor beats Paper");
         playerScore++;
     } else if (playerSelection == "rock" && computerSelection == "scissor") {
-        console.log("You win! Rock beats Scissor");
         playerScore++;
+        roundDiv.innerHTML = ("You win! Rock beats Scissor");
     } else {
-        console.log("You draw!");
+        roundDiv.innerHTML = ("You draw!");
+    }
+    
+    playerDiv.innerHTML = "Player Score: " + playerScore;
+    computerDiv.innerHTML = "Computer Score: " + computerScore;
+    
+
+    if (matchPlayed === 5) {
+        if (playerScore > computerScore) {
+            Matchdiv.innerHTML = "Player wins!";
+        } else if (computerScore > playerScore) {
+            Matchdiv.innerHTML = "Computer wins!";
+        } else {
+            Matchdiv.innerHTML = "It is a draw!";
+        }
+        matchPlayed = 0;
+        playerScore = 0;
+        computerScore = 0;
     }
 }
 
-function game() {
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("Choose one: Rock, Paper or Scissor");
-        let computerSelection = getComputerChoice();
+rock.addEventListener("click", () => {
+    playerSelection = "rock";
+    playRound("rock", getComputerChoice());
+});
 
+paper.addEventListener("click", () => {
+    playRound("paper", getComputerChoice());
+});
 
-        console.log(playRound(playerSelection.toLowerCase(), computerSelection));
-        console.log("Player Score: " + playerScore + " ComputerScore: " + computerScore);
-    }
-    if (playerScore > computerScore) {
-        console.log("Player wins!");
-    } else if (computerScore > playerScore) {
-        console.log("Computer wins!");
-    } else {
-        console.log("It is a draw!");
-    }
-}
+scissor.addEventListener("click", () => {
+    playRound("scissor", getComputerChoice());
+});
 
-let playerScore = 0;
-let computerScore = 0;
-
-console.log(game());
